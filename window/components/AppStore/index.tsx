@@ -3,7 +3,10 @@ import {AppDefinition, AppComponentProps} from '../../../types';
 import {RefreshIcon, HyperIcon} from '../../../constants';
 import Icon from './icon';
 
-const AppStoreApp: React.FC<AppComponentProps> = ({setTitle}) => {
+const AppStoreApp: React.FC<AppComponentProps> = ({
+  setTitle,
+  refreshAppDefinitions,
+}) => {
   const [availableApps, setAvailableApps] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -41,10 +44,12 @@ const AppStoreApp: React.FC<AppComponentProps> = ({setTitle}) => {
         const errorData = await response.json();
         throw new Error(errorData.error || 'Installation failed');
       }
-      alert(
-        `App ${app.name} installed successfully! You may need to restart the application to see it in the Start Menu.`,
-      );
-      // Refresh the list to show the new "Installed" state
+      // Refresh the main app list to make the new app available immediately
+      if (refreshAppDefinitions) {
+        await refreshAppDefinitions();
+      }
+      alert(`App ${app.name} installed successfully!`);
+      // Refresh the store's list to show the new "Installed" state
       fetchAvailableApps();
     } catch (error) {
       console.error('Error installing app:', error);

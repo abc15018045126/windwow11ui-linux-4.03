@@ -13,8 +13,10 @@ function hasAppDefinition(
   );
 }
 
-export const getAppDefinitions = async (): Promise<AppDefinition[]> => {
-  if (appDefinitions) {
+export const getAppDefinitions = async (
+  forceRefresh = false,
+): Promise<AppDefinition[]> => {
+  if (appDefinitions && !forceRefresh) {
     return appDefinitions;
   }
 
