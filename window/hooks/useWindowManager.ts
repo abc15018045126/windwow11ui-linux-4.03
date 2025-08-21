@@ -5,8 +5,7 @@ import {
   DEFAULT_WINDOW_WIDTH,
   DEFAULT_WINDOW_HEIGHT,
 } from '../constants';
-import {getAppDefinitions} from '@/components/apps';
-import eventService from '@/services/eventService';
+import {getAppDefinitions} from '../../components/apps';
 
 export const useWindowManager = (
   desktopRef: React.RefObject<HTMLDivElement>,
@@ -20,24 +19,14 @@ export const useWindowManager = (
   const [appsLoading, setAppsLoading] = useState(true);
 
   useEffect(() => {
-    const refreshAppDefinitions = async () => {
+    const loadApps = async () => {
       setAppsLoading(true);
-      const definitions = await getAppDefinitions(true); // forceRefresh = true
+      const definitions = await getAppDefinitions();
       setAppDefinitions(definitions);
       setAppsLoading(false);
     };
-
-    // Initial load
-    refreshAppDefinitions();
-
-    // Listen for requests to refresh the app list
-    eventService.on('apps-changed', refreshAppDefinitions);
-
-    return () => {
-      // Cleanup the listener when the component unmounts
-      eventService.off('apps-changed', refreshAppDefinitions);
-    };
-  }, []); // Empty dependency array ensures this effect runs only once on mount
+    loadApps();
+  }, []);
 
   const getNextPosition = (appWidth: number, appHeight: number) => {
     const desktopWidth = desktopRef.current?.clientWidth || window.innerWidth;
