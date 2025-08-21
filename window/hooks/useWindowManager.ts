@@ -144,7 +144,7 @@ export const useWindowManager = (
       setOpenApps(currentOpenApps => [...currentOpenApps, newApp]);
       setActiveAppInstanceId(instanceId);
     },
-    [appDefinitions, nextZIndex],
+    [appDefinitions, nextZIndex, openApps],
   );
 
   const focusApp = useCallback(
@@ -247,7 +247,7 @@ export const useWindowManager = (
         }),
       );
     },
-    [nextZIndex],
+    [nextZIndex, openApps],
   );
 
   const updateAppPosition = useCallback(
