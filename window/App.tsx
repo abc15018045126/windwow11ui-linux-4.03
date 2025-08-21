@@ -24,7 +24,6 @@ const App: React.FC = () => {
     updateAppPosition,
     updateAppSize,
     updateAppTitle,
-    refreshAppDefinitions,
   } = useWindowManager(desktopRef);
 
   const [isStartMenuOpen, setIsStartMenuOpen] = useState<boolean>(false);
@@ -142,7 +141,6 @@ const App: React.FC = () => {
                       handleCopy={handleCopy}
                       handleCut={handleCut}
                       handlePaste={handlePaste}
-                      refreshAppDefinitions={refreshAppDefinitions}
                     />
                   ))}
               </div>

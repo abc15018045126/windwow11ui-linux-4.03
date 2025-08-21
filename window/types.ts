@@ -55,9 +55,6 @@ export type AppComponentProps = {
   handleCopy?: (item: FilesystemItem) => void;
   handleCut?: (item: FilesystemItem) => void;
   handlePaste?: (destinationPath: string) => void;
-
-  // Function to allow an app to trigger a refresh of the main app list
-  refreshAppDefinitions?: () => Promise<void>;
 };
 
 export type AppComponentType = React.FC<AppComponentProps>;

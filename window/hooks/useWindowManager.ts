@@ -6,6 +6,7 @@ import {
   DEFAULT_WINDOW_HEIGHT,
 } from '../constants';
 import {getAppDefinitions} from '../../components/apps';
+import eventService from '../../services/eventService';
 
 export const useWindowManager = (
   desktopRef: React.RefObject<HTMLDivElement>,
@@ -18,15 +19,25 @@ export const useWindowManager = (
   const [appDefinitions, setAppDefinitions] = useState<AppDefinition[]>([]);
   const [appsLoading, setAppsLoading] = useState(true);
 
-  useEffect(() => {
-    const loadApps = async () => {
-      setAppsLoading(true);
-      const definitions = await getAppDefinitions();
-      setAppDefinitions(definitions);
-      setAppsLoading(false);
-    };
-    loadApps();
+  const refreshAppDefinitions = useCallback(async () => {
+    setAppsLoading(true);
+    const definitions = await getAppDefinitions(true); // forceRefresh = true
+    setAppDefinitions(definitions);
+    setAppsLoading(false);
   }, []);
+
+  useEffect(() => {
+    // Initial load
+    refreshAppDefinitions();
+
+    // Listen for requests to refresh the app list
+    eventService.on('apps-changed', refreshAppDefinitions);
+
+    return () => {
+      // Cleanup the listener when the component unmounts
+      eventService.off('apps-changed', refreshAppDefinitions);
+    };
+  }, [refreshAppDefinitions]);
 
   const getNextPosition = (appWidth: number, appHeight: number) => {
     const desktopWidth = desktopRef.current?.clientWidth || window.innerWidth;
@@ -265,15 +276,6 @@ export const useWindowManager = (
     );
   }, []);
 
-  const refreshAppDefinitions = useCallback(async () => {
-    console.log('Refreshing app definitions...');
-    setAppsLoading(true);
-    const definitions = await getAppDefinitions(true); // Force a refresh
-    setAppDefinitions(definitions);
-    setAppsLoading(false);
-    console.log('App definitions refreshed.');
-  }, []);
-
   // The hook returns everything the App component needs
   return {
     openApps,
@@ -289,6 +291,5 @@ export const useWindowManager = (
     updateAppPosition,
     updateAppSize,
     updateAppTitle,
-    refreshAppDefinitions,
   };
 };

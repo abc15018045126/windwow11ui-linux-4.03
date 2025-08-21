@@ -1,12 +1,10 @@
 import React, {useState, useEffect, useCallback} from 'react';
-import {AppDefinition, AppComponentProps} from '../../../types';
+import {AppComponentProps} from '../../../types';
 import {RefreshIcon, HyperIcon} from '../../../constants';
+import eventService from '../../../../services/eventService';
 import Icon from './icon';
 
-const AppStoreApp: React.FC<AppComponentProps> = ({
-  setTitle,
-  refreshAppDefinitions,
-}) => {
+const AppStoreApp: React.FC<AppComponentProps> = ({setTitle}) => {
   const [availableApps, setAvailableApps] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -44,11 +42,11 @@ const AppStoreApp: React.FC<AppComponentProps> = ({
         const errorData = await response.json();
         throw new Error(errorData.error || 'Installation failed');
       }
-      // Refresh the main app list to make the new app available immediately
-      if (refreshAppDefinitions) {
-        await refreshAppDefinitions();
-      }
+      // Notify the rest of the app that the app list has changed
+      eventService.emit('apps-changed');
+
       alert(`App ${app.name} installed successfully!`);
+
       // Refresh the store's list to show the new "Installed" state
       fetchAvailableApps();
     } catch (error) {
