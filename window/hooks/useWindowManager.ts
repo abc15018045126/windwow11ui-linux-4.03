@@ -265,6 +265,15 @@ export const useWindowManager = (
     );
   }, []);
 
+  const refreshAppDefinitions = useCallback(async () => {
+    console.log('Refreshing app definitions...');
+    setAppsLoading(true);
+    const definitions = await getAppDefinitions(true); // Force a refresh
+    setAppDefinitions(definitions);
+    setAppsLoading(false);
+    console.log('App definitions refreshed.');
+  }, []);
+
   // The hook returns everything the App component needs
   return {
     openApps,
@@ -280,5 +289,6 @@ export const useWindowManager = (
     updateAppPosition,
     updateAppSize,
     updateAppTitle,
+    refreshAppDefinitions,
   };
 };

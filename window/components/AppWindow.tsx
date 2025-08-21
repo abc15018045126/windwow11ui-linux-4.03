@@ -22,6 +22,7 @@ interface AppWindowProps {
   handleCopy?: (item: FilesystemItem) => void;
   handleCut?: (item: FilesystemItem) => void;
   handlePaste?: (destinationPath: string) => void;
+  refreshAppDefinitions?: () => Promise<void>;
 }
 
 const AppWindow: React.FC<AppWindowProps> = ({
@@ -41,6 +42,7 @@ const AppWindow: React.FC<AppWindowProps> = ({
   handleCopy,
   handleCut,
   handlePaste,
+  refreshAppDefinitions,
 }) => {
   const [isDragging, setIsDragging] = useState(false);
   const [dragStartPos, setDragStartPos] = useState({x: 0, y: 0});
@@ -304,6 +306,7 @@ const AppWindow: React.FC<AppWindowProps> = ({
           handleCopy={handleCopy}
           handleCut={handleCut}
           handlePaste={handlePaste}
+          refreshAppDefinitions={refreshAppDefinitions}
         />
       </div>
     </div>
