@@ -132,9 +132,7 @@ const App: React.FC = () => {
                       onResize={updateAppSize}
                       isActive={app.instanceId === activeAppInstanceId}
                       desktopRef={desktopRef}
-                      onSetTitle={newTitle =>
-                        updateAppTitle(app.instanceId, newTitle)
-                      }
+                      updateAppTitle={updateAppTitle}
                       onWallpaperChange={() => {}} // This is now handled by themes app
                       openApp={openApp}
                       clipboard={clipboard}
