@@ -1,7 +1,7 @@
 import React, {useState, useEffect, useCallback} from 'react';
-import {AppComponentProps} from '../../../types';
-import {RefreshIcon, HyperIcon} from '../../../constants';
-import eventService from '../../../../services/eventService';
+import {AppComponentProps} from '@/window/types';
+import {RefreshIcon, HyperIcon} from '@/window/constants';
+import eventService from '@/services/eventService';
 import Icon from './icon';
 
 const AppStoreApp: React.FC<AppComponentProps> = ({setTitle}) => {

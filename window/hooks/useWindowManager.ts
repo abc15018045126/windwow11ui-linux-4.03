@@ -5,8 +5,8 @@ import {
   DEFAULT_WINDOW_WIDTH,
   DEFAULT_WINDOW_HEIGHT,
 } from '../constants';
-import {getAppDefinitions} from '../../components/apps';
-import eventService from '../../services/eventService';
+import {getAppDefinitions} from '@/components/apps';
+import eventService from '@/services/eventService';
 
 export const useWindowManager = (
   desktopRef: React.RefObject<HTMLDivElement>,
