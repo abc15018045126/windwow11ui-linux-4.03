@@ -19,14 +19,14 @@ export const useWindowManager = (
   const [appDefinitions, setAppDefinitions] = useState<AppDefinition[]>([]);
   const [appsLoading, setAppsLoading] = useState(true);
 
-  const refreshAppDefinitions = useCallback(async () => {
-    setAppsLoading(true);
-    const definitions = await getAppDefinitions(true); // forceRefresh = true
-    setAppDefinitions(definitions);
-    setAppsLoading(false);
-  }, []);
-
   useEffect(() => {
+    const refreshAppDefinitions = async () => {
+      setAppsLoading(true);
+      const definitions = await getAppDefinitions(true); // forceRefresh = true
+      setAppDefinitions(definitions);
+      setAppsLoading(false);
+    };
+
     // Initial load
     refreshAppDefinitions();
 
@@ -37,7 +37,7 @@ export const useWindowManager = (
       // Cleanup the listener when the component unmounts
       eventService.off('apps-changed', refreshAppDefinitions);
     };
-  }, [refreshAppDefinitions]);
+  }, []); // Empty dependency array ensures this effect runs only once on mount
 
   const getNextPosition = (appWidth: number, appHeight: number) => {
     const desktopWidth = desktopRef.current?.clientWidth || window.innerWidth;
